@@ -10,7 +10,7 @@ export async function POST(
     const tournamentId = parseInt(id)
     const gameIdNum = parseInt(gameId)
     const { playerId, ownGoal } = await request.json()
-    
+
     if (isNaN(tournamentId) || isNaN(gameIdNum)) {
       return NextResponse.json({ error: 'Invalid IDs' }, { status: 400 })
     }
@@ -56,7 +56,15 @@ export async function POST(
     }
 
     // Determine credited team: own goal -> opposite team
-    const creditedTeamId = ownGoal ? (player.teamId === game.homeTeamId ? game.awayTeamId : game.homeTeamId) : player.teamId
+    // Verify player has a team
+    if (!player.teamId) {
+      return NextResponse.json({ error: 'Player is not assigned to a team' }, { status: 400 })
+    }
+
+    // Determine credited team: own goal -> opposite team
+    const creditedTeamId = ownGoal ?
+      (player.teamId === game.homeTeamId ? game.awayTeamId : game.homeTeamId) :
+      player.teamId
 
     // Create the goal
     const goal = await prisma.goal.create({

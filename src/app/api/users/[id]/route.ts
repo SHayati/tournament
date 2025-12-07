@@ -5,15 +5,14 @@ import { authOptions } from "@/lib/auth";
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const session = await getServerSession(authOptions);
-    // @ts-ignore
     if (!session?.user?.isAdmin) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
 
     // Check if target user is super admin
     const targetUser = await prisma.user.findUnique({ where: { id } });
@@ -32,15 +31,14 @@ export async function DELETE(
 
 export async function PATCH(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const session = await getServerSession(authOptions);
-    // @ts-ignore
     if (!session?.user?.isAdmin) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
 
     // Check if target user is super admin
     const targetUser = await prisma.user.findUnique({ where: { id } });

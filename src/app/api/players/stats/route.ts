@@ -6,6 +6,7 @@ export async function GET() {
     // Get all players with their goals
     const players = await prisma.player.findMany({
       include: {
+        team: true,
         goals: {
           include: {
             game: {
@@ -39,7 +40,7 @@ export async function GET() {
     // Create a comprehensive map of team compositions by analyzing all goal data
     // This will help us reconstruct team participation for all players
     const teamPlayerMap = new Map<number, Set<number>>() // teamId -> Set of playerIds
-    
+
     // First, populate the map with players who scored goals
     allGames.forEach(game => {
       game.goals.forEach(goal => {
@@ -49,13 +50,13 @@ export async function GET() {
         teamPlayerMap.get(goal.teamId)!.add(goal.playerId)
       })
     })
-    
+
     // Now we need to infer additional team members who never scored
     // We'll use a heuristic: if a player was on a team in one game, they were likely on that team in other games
-    
+
     // Create a map of player -> most common team they played for
     const playerTeamMap = new Map<number, number>() // playerId -> most common teamId
-    
+
     players.forEach(player => {
       if (player.goals.length > 0) {
         // Count goals per team for this player
@@ -64,7 +65,7 @@ export async function GET() {
           const count = teamGoalCounts.get(goal.teamId) || 0
           teamGoalCounts.set(goal.teamId, count + 1)
         })
-        
+
         // Find the team with the most goals
         let mostCommonTeamId: number | null = null
         let maxGoals = 0
@@ -74,13 +75,13 @@ export async function GET() {
             mostCommonTeamId = teamId
           }
         }
-        
+
         if (mostCommonTeamId) {
           playerTeamMap.set(player.id, mostCommonTeamId)
         }
       }
     })
-    
+
     // Now add players to teams based on their most common team
     playerTeamMap.forEach((teamId, playerId) => {
       if (!teamPlayerMap.has(teamId)) {
@@ -88,7 +89,7 @@ export async function GET() {
       }
       teamPlayerMap.get(teamId)!.add(playerId)
     })
-    
+
     // Get all team compositions from the database
     const teamCompositions = await prisma.teamComposition.findMany({
       include: {
@@ -96,7 +97,7 @@ export async function GET() {
         player: true
       }
     })
-    
+
     // Add all players from team compositions to the team-player map
     teamCompositions.forEach(composition => {
       if (!teamPlayerMap.has(composition.teamId)) {
@@ -104,14 +105,14 @@ export async function GET() {
       }
       teamPlayerMap.get(composition.teamId)!.add(composition.playerId)
     })
-    
+
     // Fallback: Add hardcoded team members for existing tournament (until new tournaments use the new system)
     const additionalTeamMembers = {
       15: [9, 19], // Team A: Chiya Afsar (9), Siamak Siamak (19) - players who never scored
       16: [], // No longer force-assign player 23 to Team B
       17: []  // Team C: Only goal scorers (Asib Fayzi, Esmail, Amir Naseri, Guest1)
     }
-    
+
     // Add these additional players to their respective teams (fallback for existing data)
     Object.entries(additionalTeamMembers).forEach(([teamId, playerIds]) => {
       const teamIdNum = parseInt(teamId)
@@ -143,7 +144,7 @@ export async function GET() {
 
       // Find all games this player participated in
       const playerGames = new Map<number, { game: any, teamId: number }>()
-      
+
       // Method 1: Games where player scored goals
       player.goals.forEach(goal => {
         if (goal.game && goal.game.status === 'FINISHED') {
@@ -158,7 +159,7 @@ export async function GET() {
       // Use the comprehensive team-player map to determine participation
       for (const game of allGames) {
         if (playerGames.has(game.id)) continue // Already counted from goals
-        
+
         // Check if player was on home team
         const homeTeamPlayers = teamPlayerMap.get(game.homeTeamId) || new Set()
         if (homeTeamPlayers.has(player.id)) {
@@ -168,7 +169,7 @@ export async function GET() {
           })
           continue
         }
-        
+
         // Check if player was on away team
         const awayTeamPlayers = teamPlayerMap.get(game.awayTeamId) || new Set()
         if (awayTeamPlayers.has(player.id)) {
@@ -181,22 +182,22 @@ export async function GET() {
 
       // Count unique tournaments the player has participated in
       const tournamentIds = new Set<number>()
-      
+
       // Check tournaments from games the player participated in
       for (const [gameId, { game }] of playerGames) {
         if (game?.tournamentId) {
           tournamentIds.add(game.tournamentId)
         }
       }
-      
+
       tournamentsParticipated = tournamentIds.size
 
       // For each game the player participated in, determine the result
       for (const [gameId, { game, teamId }] of playerGames) {
         if (game && game.goals) {
-          const homeGoals = game.goals.filter(g => g.teamId === game.homeTeamId && !g.ownGoal).length
-          const awayGoals = game.goals.filter(g => g.teamId === game.awayTeamId && !g.ownGoal).length
-          
+          const homeGoals = game.goals.filter((g: { teamId: number; ownGoal: boolean }) => g.teamId === game.homeTeamId && !g.ownGoal).length
+          const awayGoals = game.goals.filter((g: { teamId: number; ownGoal: boolean }) => g.teamId === game.awayTeamId && !g.ownGoal).length
+
           if (teamId === game.homeTeamId) {
             // Player was on home team
             if (homeGoals > awayGoals) {

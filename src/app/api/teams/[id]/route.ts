@@ -5,14 +5,15 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const teamId = parseInt(params.id)
+    const { id } = await params
+    const teamId = parseInt(id)
 
     if (isNaN(teamId)) {
       return NextResponse.json({ error: 'Invalid team ID' }, { status: 400 })

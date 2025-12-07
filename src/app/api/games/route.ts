@@ -60,10 +60,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'One or both teams not found' }, { status: 404 })
     }
 
+    // Since we validated both teams exist, we can use the tournamentId from the first team
+    // (Assuming both teams operate within valid tournaments, practically they should be in the same one for a game)
+    const tournamentId = teams[0].tournamentId;
+
     const game = await prisma.game.create({
       data: {
         homeTeamId: homeTeamId,
         awayTeamId: awayTeamId,
+        tournamentId: tournamentId,
         status: 'SCHEDULED'
       },
       include: {

@@ -38,15 +38,32 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { name } = await request.json()
+    let { name, tournamentId } = await request.json()
 
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Team name is required' }, { status: 400 })
     }
 
+    // If no tournamentId provided, find the most recent one (fallback)
+    if (!tournamentId) {
+      const latestTournament = await prisma.tournament.findFirst({
+        orderBy: { createdAt: 'desc' }
+      });
+
+      if (latestTournament) {
+        tournamentId = latestTournament.id;
+      }
+    }
+
+    // If still no tournamentId, we cannot create a team
+    if (!tournamentId) {
+      return NextResponse.json({ error: 'No tournament found to assign team to' }, { status: 400 })
+    }
+
     const team = await prisma.team.create({
       data: {
-        name: name.trim()
+        name: name.trim(),
+        tournamentId: parseInt(tournamentId as string) // Ensure it's a number
       }
     })
 
