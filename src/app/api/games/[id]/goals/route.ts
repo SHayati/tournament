@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const gameId = parseInt(params.id)
     const { playerId } = await request.json()
-    
+
     if (isNaN(gameId)) {
       return NextResponse.json({ error: 'Invalid game ID' }, { status: 400 })
     }
@@ -51,8 +57,8 @@ export async function POST(
       return NextResponse.json({ error: 'Player not found' }, { status: 404 })
     }
 
-    const isHomePlayer = game.homeTeam.players.some(p => p.id === playerId)
-    const isAwayPlayer = game.awayTeam.players.some(p => p.id === playerId)
+    const isHomePlayer = game.homeTeam.players.some((p: { id: number }) => p.id === playerId)
+    const isAwayPlayer = game.awayTeam.players.some((p: { id: number }) => p.id === playerId)
 
     if (!isHomePlayer && !isAwayPlayer) {
       return NextResponse.json({ error: 'Player does not belong to either team in this game' }, { status: 400 })
