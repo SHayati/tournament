@@ -294,7 +294,7 @@ export default function Stopwatch() {
       {/* Finished Status */}
       {finished && (
         <div className="absolute -bottom-8 bg-green-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg animate-bounce">
-          ⏱️ Time's Up!
+          ⏱️ Time&apos;s Up!
         </div>
       )}
 

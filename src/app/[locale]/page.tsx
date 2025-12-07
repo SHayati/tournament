@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import LastTournamentSummary from '@/components/dashboard/LastTournamentSummary';
 import TopScorers from '@/components/dashboard/TopScorers';
 
@@ -65,12 +66,12 @@ export default function Home() {
           ) : (
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 text-center">
               <p className="text-gray-500 mb-4">No tournament data available</p>
-              <a
+              <Link
                 href="/tournaments/new"
                 className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
               >
                 Create Tournament
-              </a>
+              </Link>
             </div>
           )}
         </div>
