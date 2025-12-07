@@ -184,5 +184,27 @@
             "edit": "Rediger kamp"
         },
         "empty": "Ingen kamper opprettet ennå"
+    },
+    "Auth": {
+        "login": "Logg inn",
+        "logout": "Logg ut",
+        "users": "Brukere",
+        "admin": "Admin",
+        "user": "Bruker",
+        "email": "E-post",
+        "name": "Navn",
+        "created": "Opprettet",
+        "actions": "Handlinger",
+        "makeAdmin": "Gjør til admin",
+        "removeAdmin": "Fjern admin",
+        "delete": "Slett",
+        "signInWithGoogle": "Logg inn med Google",
+        "unauthorized": "Du har ikke tilgang til denne siden.",
+        "addUser": "Legg til bruker",
+        "add": "Legg til",
+        "adding": "Legger til...",
+        "userAdded": "Bruker lagt til",
+        "errorAdding": "Feil ved lagring av bruker",
+        "exists": "Bruker finnes allerede"
     }
 }

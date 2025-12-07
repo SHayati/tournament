@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations, useFormatter } from 'next-intl';
+import { useSession } from "next-auth/react";
 
 interface Tournament {
   id: number
@@ -19,13 +20,10 @@ interface Tournament {
 export default function TournamentsPage() {
   const t = useTranslations('Tournaments');
   const format = useFormatter();
+  const { data: session, status } = useSession();
   const [tournaments, setTournaments] = useState<Tournament[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-
-  useEffect(() => {
-    fetchTournaments()
-  }, [])
 
   const fetchTournaments = async () => {
     try {
@@ -39,6 +37,22 @@ export default function TournamentsPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    } else if (status === 'authenticated') {
+      fetchTournaments();
+    }
+  }, [status, router]);
+
+  if (status === 'loading' || (status === 'authenticated' && loading)) {
+    return (
+      <div className="px-4 py-6 sm:px-0">
+        <div className="text-center">{t('loading')}</div>
+      </div>
+    )
   }
 
   const handleDeleteTournament = async (tournamentId: number, tournamentName: string) => {

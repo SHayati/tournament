@@ -184,5 +184,27 @@
             "edit": "Edit match"
         },
         "empty": "No matches created yet"
+    },
+    "Auth": {
+        "login": "Log in",
+        "logout": "Log out",
+        "users": "Users",
+        "admin": "Admin",
+        "user": "User",
+        "email": "Email",
+        "name": "Name",
+        "created": "Created",
+        "actions": "Actions",
+        "makeAdmin": "Make Admin",
+        "removeAdmin": "Remove Admin",
+        "delete": "Delete",
+        "signInWithGoogle": "Sign in with Google",
+        "unauthorized": "You are not authorized to view this page.",
+        "addUser": "Add User",
+        "add": "Add",
+        "adding": "Adding...",
+        "userAdded": "User added successfully",
+        "errorAdding": "Error adding user",
+        "exists": "User already exists"
     }
 }
