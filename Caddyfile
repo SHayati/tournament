@@ -1,0 +1,7 @@
+www.oppstart.xyz {
+    redir https://oppstart.xyz{uri}
+}
+
+oppstart.xyz {
+    reverse_proxy localhost:3000
+}

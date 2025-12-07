@@ -97,3 +97,41 @@ npm run lint
 npx prisma studio  # Åpne database GUI
 npx prisma db push # Push schema endringer
 ```
+
+## Produksjonsoppsett (valgfritt med HTTPS)
+
+Hvis du ønsker å kjøre applikasjonen på et eget domene (f.eks. `https://oppstart.xyz`) med automatisk HTTPS, kan du bruke **Caddy** som reverse proxy.
+
+1. **Installer Caddy**: [Last ned Caddy](https://caddyserver.com/download)
+2. **Konfigurer Caddyfile**:
+   En `Caddyfile` er allerede inkludert i prosjektet. Den ser slik ut:
+   ```caddy
+   www.oppstart.xyz {
+       redir https://oppstart.xyz{uri}
+   }
+
+   oppstart.xyz {
+       reverse_proxy localhost:3000
+   }
+   ```
+   *Endre `oppstart.xyz` til ditt eget domene.*
+
+3. **Oppdater Miljøvariabler**:
+   Endre `.env` filen:
+   ```env
+   NEXTAUTH_URL=https://ditt-domene.com
+   ```
+
+4. **Kjør Server**:
+   Start applikasjonen og Caddy parallelt:
+
+   Terminal 1 (App):
+   ```bash
+   npm run build
+   npm start
+   ```
+
+   Terminal 2 (Caddy):
+   ```bash
+   caddy run
+   ```
