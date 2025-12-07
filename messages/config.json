@@ -1,0 +1,93 @@
+[
+    {
+        "code": "no",
+        "name": "Norsk",
+        "file": "no.json",
+        "flag": {
+            "viewBox": "0 0 512 512",
+            "elements": [
+                {
+                    "type": "rect",
+                    "props": {
+                        "width": "512",
+                        "height": "512",
+                        "fill": "#ba0c2f"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "d": "M0 320h512v-128h-512z",
+                        "fill": "#fff"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "d": "M192 0v512h128v-512z",
+                        "fill": "#fff"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "d": "M0 288h512v-64h-512z",
+                        "fill": "#00205b"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "d": "M224 0v512h64v-512z",
+                        "fill": "#00205b"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "code": "en",
+        "name": "English",
+        "file": "en.json",
+        "flag": {
+            "viewBox": "0 0 512 512",
+            "elements": [
+                {
+                    "type": "path",
+                    "props": {
+                        "fill": "#B22234",
+                        "d": "M0 0h512v512H0z"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "fill": "#FFF",
+                        "d": "M0 40h512v40H0zm0 80h512v40H0zm0 80h512v40H0zm0 80h512v40H0zm0 80h512v40H0zm0 80h512v40H0z"
+                    }
+                },
+                {
+                    "type": "path",
+                    "props": {
+                        "fill": "#3C3B6E",
+                        "d": "M0 0h240v263H0z"
+                    }
+                },
+                {
+                    "type": "g",
+                    "props": {
+                        "fill": "#FFF"
+                    },
+                    "children": [
+                        {
+                            "type": "path",
+                            "props": {
+                                "d": "M18 10h14v10H18zM57 10h14v10H57zM97 10h14v10H97zM136 10h14v10H136zM176 10h14v10H176zM215 10h14v10H215zM38 27h14v9H38zM77 27h14v9H77zM117 27h14v9H117zM156 27h14v9H156zM196 27h14v9H196zM18 43h14v10H18zM57 43h14v10H57zM97 43h14v10H97zM136 43h14v10H136zM176 43h14v10H176zM215 43h14v10H215zM38 60h14v10H38zM77 60h14v10H77zM117 60h14v10H117zM156 60h14v10H156zM196 60h14v10H196zM18 76h14v10H18zM57 76h14v10H57zM97 76h14v10H97zM136 76h14v10H136zM176 76h14v10H176zM215 76h14v10H215zM38 93h14v10H38zM77 93h14v10H77zM117 93h14v10H117zM156 93h14v10H156zM196 93h14v10H196zM18 110h14v10H18zM57 110h14v10H57zM97 110h14v10H97zM136 110h14v10H136zM176 110h14v10H176zM215 110h14v10H215zM38 126h14v10H38zM77 126h14v10H77zM117 126h14v10H117zM156 126h14v10H156zM196 126h14v10H196zM18 143h14v10H18zM57 143h14v10H57zM97 143h14v10H97zM136 143h14v10H136zM176 143h14v10H176zM215 143h14v10H215z"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

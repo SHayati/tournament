@@ -1,8 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function SetupMenu() {
+  const t = useTranslations('SetupMenu');
   const [open, setOpen] = useState(false)
   const [minutes, setMinutes] = useState<string>('0')
   const menuRef = useRef<HTMLDivElement | null>(null)
@@ -15,7 +18,7 @@ export default function SetupMenu() {
         const m = Math.floor(parseInt(saved, 10) / 60)
         setMinutes(String(m))
       }
-    } catch {}
+    } catch { }
 
     const onClick = (e: MouseEvent) => {
       if (open && menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -30,11 +33,11 @@ export default function SetupMenu() {
     const secs = Math.max(0, Math.floor(mins * 60))
     try {
       localStorage.setItem('stopwatchTargetSeconds', String(secs))
-    } catch {}
+    } catch { }
     // Notify listeners in the same tab
     try {
       window.dispatchEvent(new CustomEvent('stopwatchTargetChange', { detail: { seconds: secs } }))
-    } catch {}
+    } catch { }
   }
 
   return (
@@ -47,16 +50,16 @@ export default function SetupMenu() {
         }}
         className="px-3 py-1.5 text-sm rounded bg-gray-100 text-gray-800 hover:bg-gray-200"
       >
-        Innstillinger
+        {t('settings')}
       </button>
       {open && (
         <div className="absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-4 z-50">
-          <div className="mb-2 text-sm font-medium text-gray-900">Skriv spilletid (minutter)</div>
+          <div className="mb-2 text-sm font-medium text-gray-900">{t('title')}</div>
           <input
             type="number"
             inputMode="numeric"
             min={0}
-            placeholder="For eksempel 15"
+            placeholder={t('placeholder')}
             value={minutes}
             onChange={(e) => {
               // allow empty during typing
@@ -70,7 +73,10 @@ export default function SetupMenu() {
             }}
             className="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm px-3 py-2"
           />
-          <p className="mt-2 text-xs text-gray-500">0 eller tomt betyr uendelig.</p>
+          <p className="mt-2 text-xs text-gray-500">{t('hint')}</p>
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <LanguageSwitcher />
+          </div>
         </div>
       )}
     </div>

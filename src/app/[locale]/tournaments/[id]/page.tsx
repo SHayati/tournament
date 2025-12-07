@@ -1,5 +1,6 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { prisma } from '@/lib/prisma'
+import { getTranslations, getFormatter } from 'next-intl/server'
 
 async function getTournament(tournamentId: number) {
   return await prisma.tournament.findUnique({
@@ -43,28 +44,30 @@ async function getTournament(tournamentId: number) {
   })
 }
 
-function getStatusBadge(status: string) {
+async function StatusBadge({ status, t }: { status: string, t: any }) {
   switch (status) {
     case 'SCHEDULED':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Planlagt</span>
+      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{t('status.scheduled')}</span>
     case 'IN_PROGRESS':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pågår</span>
+      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">{t('status.inProgress')}</span>
     case 'FINISHED':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Ferdig</span>
+      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{t('status.finished')}</span>
     default:
       return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{status}</span>
   }
 }
 
-export default async function TournamentPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function TournamentPage({ params }: { params: Promise<{ id: string, locale: string }> }) {
   const { id } = await params
   const tournamentId = parseInt(id)
   const tournament = await getTournament(tournamentId)
+  const t = await getTranslations('TournamentDetail');
+  const format = await getFormatter();
 
   if (!tournament) {
     return (
       <div className="px-4 py-6 sm:px-0">
-        <div className="text-center text-red-600">Turnering ikke funnet</div>
+        <div className="text-center text-red-600">{t('notFound')}</div>
       </div>
     )
   }
@@ -76,7 +79,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
           href="/tournaments"
           className="text-blue-600 hover:text-blue-800 mb-4 inline-block"
         >
-          ← Tilbake til turneringer
+          {t('back')}
         </Link>
         <div className="flex items-center">
           <h1 className="text-2xl font-semibold text-gray-900">
@@ -84,12 +87,12 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
           </h1>
           {tournament.isFinished && (
             <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-              Avsluttet
+              {t('status.finished')}
             </span>
           )}
         </div>
         <p className="mt-2 text-sm text-gray-700">
-          Opprettet: {new Date(tournament.createdAt).toLocaleDateString('no-NO')}
+          {t('created')}: {format.dateTime(new Date(tournament.createdAt), { year: 'numeric', month: '2-digit', day: '2-digit' })}
         </p>
       </div>
 
@@ -105,7 +108,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Lag</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">{t('stats.teams')}</dt>
                   <dd className="text-lg font-medium text-gray-900">{tournament._count.teams}</dd>
                 </dl>
               </div>
@@ -123,7 +126,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Kamper</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">{t('stats.games')}</dt>
                   <dd className="text-lg font-medium text-gray-900">{tournament._count.games}</dd>
                 </dl>
               </div>
@@ -141,7 +144,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Spillere</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">{t('stats.players')}</dt>
                   <dd className="text-lg font-medium text-gray-900">
                     {tournament.teams.reduce((sum, team) => sum + team._count.players, 0)}
                   </dd>
@@ -167,8 +170,8 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Administrer Lag</h3>
-                  <p className="text-sm text-gray-500">Legg til og administrer lag</p>
+                  <h3 className="text-lg font-medium text-gray-900">{t('actions.manageTeams')}</h3>
+                  <p className="text-sm text-gray-500">{t('actions.manageTeamsDesc')}</p>
                 </div>
               </div>
             </Link>
@@ -184,8 +187,8 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Administrer Kamper</h3>
-                  <p className="text-sm text-gray-500">Opprett og administrer kamper</p>
+                  <h3 className="text-lg font-medium text-gray-900">{t('actions.manageGames')}</h3>
+                  <p className="text-sm text-gray-500">{t('actions.manageGamesDesc')}</p>
                 </div>
               </div>
             </Link>
@@ -193,9 +196,9 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
         ) : (
           <div className="md:col-span-2 bg-gray-50 p-6 rounded-lg">
             <div className="text-center">
-              <div className="text-gray-500 text-lg mb-2">Turneringen er avsluttet</div>
+              <div className="text-gray-500 text-lg mb-2">{t('finishedMessage.title')}</div>
               <p className="text-sm text-gray-400">
-                Du kan ikke lenger redigere lag eller kamper
+                {t('finishedMessage.desc')}
               </p>
             </div>
           </div>
@@ -212,8 +215,8 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
               </div>
             </div>
             <div className="ml-4">
-              <h3 className="text-lg font-medium text-gray-900">Ligatabell</h3>
-              <p className="text-sm text-gray-500">Se resultater og poeng</p>
+              <h3 className="text-lg font-medium text-gray-900">{t('actions.viewStandings')}</h3>
+              <p className="text-sm text-gray-500">{t('actions.viewStandingsDesc')}</p>
             </div>
           </div>
         </Link>
@@ -224,7 +227,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-medium text-gray-900">
-              {tournament.isFinished ? 'Alle kamper' : 'Siste kamper'}
+              {tournament.isFinished ? t('gamesList.all') : t('gamesList.recent')}
             </h2>
           </div>
           <div className="divide-y divide-gray-200">
@@ -244,12 +247,12 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  {getStatusBadge(game.status)}
+                  <StatusBadge status={game.status} t={t} />
                   <Link
                     href={`/tournaments/${tournamentId}/games/${game.id}`}
                     className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                   >
-                    {tournament.isFinished ? 'Se detaljer' : (game.status === 'IN_PROGRESS' ? 'Registrer mål' : 'Se detaljer')}
+                    {tournament.isFinished ? t('gamesList.viewDetails') : (game.status === 'IN_PROGRESS' ? t('gamesList.recordGoals') : t('gamesList.viewDetails'))}
                   </Link>
                 </div>
               </div>

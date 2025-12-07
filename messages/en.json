@@ -1,0 +1,188 @@
+{
+    "Navigation": {
+        "home": "Home",
+        "players": "Players",
+        "tournaments": "Tournaments",
+        "standings": "Standings",
+        "settings": "Settings"
+    },
+    "Stopwatch": {
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Reset"
+    },
+    "SetupMenu": {
+        "settings": "Settings",
+        "title": "Enter game duration (minutes)",
+        "placeholder": "For example 15",
+        "hint": "0 or empty means infinite."
+    },
+    "Common": {
+        "title": "Persia Football Tournament",
+        "description": "Manage football tournaments"
+    },
+    "Home": {
+        "title": "Welcome to Persia Football Tournament",
+        "subtitle": "Manage tournaments, teams, players and matches easily",
+        "manageTournaments": "Manage Tournaments",
+        "manageTournamentsDesc": "Create and manage tournaments",
+        "createTournament": "Create New Tournament",
+        "createTournamentDesc": "Start a new football tournament",
+        "viewStandings": "View Standings",
+        "viewStandingsDesc": "League tables and top scorers"
+    },
+    "Tournaments": {
+        "title": "Tournaments",
+        "subtitle": "Manage and create new tournaments",
+        "createButton": "Create new tournament",
+        "loading": "Loading...",
+        "confirmDelete": "Are you sure you want to delete the tournament \"{name}\"? This will also delete all teams, players, and matches.",
+        "confirmFinish": "Are you sure you want to finish the tournament \"{name}\"? This will lock the tournament for further editing.",
+        "errorDelete": "Error deleting tournament",
+        "errorFinish": "Error finishing tournament",
+        "table": {
+            "tournament": "Tournament",
+            "teams": "Teams",
+            "games": "matches",
+            "created": "Created",
+            "actions": "Actions"
+        },
+        "status": {
+            "finished": "Finished",
+            "scheduled": "Scheduled",
+            "inProgress": "In Progress"
+        },
+        "actions": {
+            "manage": "Manage",
+            "finish": "Finish",
+            "delete": "Delete"
+        },
+        "empty": {
+            "message": "No tournaments created yet",
+            "createFirst": "Create your first tournament"
+        },
+        "teamsSuffix": "teams",
+        "gamesSuffix": "matches"
+    },
+    "TournamentsNew": {
+        "title": "Create New Tournament",
+        "subtitle": "Give the tournament a name and start managing",
+        "form": {
+            "label": "Tournament Name",
+            "placeholder": "E.g. Winter Tournament 2025",
+            "hint": "You can add teams and players after the tournament is created",
+            "cancel": "Cancel",
+            "submit": "Create Tournament",
+            "submitting": "Creating..."
+        },
+        "error": "Error creating tournament"
+    },
+    "TournamentDetail": {
+        "notFound": "Tournament not found",
+        "back": "← Back to tournaments",
+        "status": {
+            "finished": "Finished",
+            "scheduled": "Scheduled",
+            "inProgress": "In Progress"
+        },
+        "created": "Created",
+        "stats": {
+            "teams": "Teams",
+            "games": "Matches",
+            "players": "Players"
+        },
+        "actions": {
+            "manageTeams": "Manage Teams",
+            "manageTeamsDesc": "Add and manage teams",
+            "manageGames": "Manage Games",
+            "manageGamesDesc": "Create and manage matches",
+            "viewStandings": "League Table",
+            "viewStandingsDesc": "View results and standings"
+        },
+        "finishedMessage": {
+            "title": "Tournament is finished",
+            "desc": "You can no longer edit teams or matches"
+        },
+        "gamesList": {
+            "all": "All matches",
+            "recent": "Recent matches",
+            "viewDetails": "View details",
+            "recordGoals": "Record goals"
+        }
+    },
+    "Players": {
+        "title": "Manage Players",
+        "statsTitle": "Player Statistics",
+        "loading": "Loading players...",
+        "empty": "No players registered",
+        "table": {
+            "player": "Player",
+            "team": "Team",
+            "tournaments": "Tournaments",
+            "won": "Won",
+            "draw": "Draw",
+            "lost": "Lost",
+            "goals": "Goals",
+            "ownGoals": "Own Goals",
+            "goalsPerGame": "Goals/game"
+        }
+    },
+    "Standings": {
+        "title": "Standings",
+        "subtitle": "Select a tournament to view standings",
+        "loading": "Loading...",
+        "empty": {
+            "message": "No tournaments found",
+            "sub": "Create a tournament to view standings",
+            "create": "Create new tournament"
+        },
+        "card": {
+            "view": "View standings and top scorers"
+        }
+    },
+    "Teams": {
+        "notFound": "Tournament not found",
+        "back": "← Back to tournaments",
+        "title": "Teams for {name}",
+        "subtitle": "Manage teams and players for this tournament",
+        "teamsHeader": "Teams",
+        "createButton": "Create new team",
+        "table": {
+            "team": "Team",
+            "playerCount": "Player count",
+            "players": "Players",
+            "actions": "Actions"
+        },
+        "playersCount": "{current}/10 players",
+        "noPlayers": "No players",
+        "managePlayers": "Manage players",
+        "empty": "No teams created yet"
+    },
+    "Games": {
+        "notFound": "Tournament not found",
+        "back": "← Back to tournament",
+        "title": "Matches for {name}",
+        "subtitle": "Manage matches for this tournament",
+        "gamesHeader": "Matches",
+        "createButton": "Create new match",
+        "table": {
+            "match": "Match",
+            "result": "Result",
+            "goals": "Goals",
+            "actions": "Actions"
+        },
+        "status": {
+            "scheduled": "Scheduled",
+            "inProgress": "In Progress",
+            "finished": "Finished"
+        },
+        "goalsCount": "{count} goals",
+        "actions": {
+            "start": "Start game",
+            "recordGoals": "Record goals",
+            "details": "View details",
+            "edit": "Edit match"
+        },
+        "empty": "No matches created yet"
+    }
+}

@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl';
 
 export default function NewTournamentPage() {
+  const t = useTranslations('TournamentsNew');
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -14,7 +16,7 @@ export default function NewTournamentPage() {
 
     try {
       console.log('Submitting tournament with name:', name)
-      
+
       const response = await fetch('/api/tournaments', {
         method: 'POST',
         headers: {
@@ -24,7 +26,7 @@ export default function NewTournamentPage() {
       })
 
       console.log('Response status:', response.status)
-      
+
       if (response.ok) {
         const tournament = await response.json()
         console.log('Tournament created:', tournament)
@@ -32,11 +34,11 @@ export default function NewTournamentPage() {
       } else {
         const errorData = await response.json()
         console.error('Error response:', errorData)
-        alert(`Feil ved opprettelse av turnering: ${errorData.error || 'Ukjent feil'}`)
+        alert(`${t('error')}: ${errorData.error || 'Ukjent feil'}`)
       }
     } catch (error) {
       console.error('Error creating tournament:', error)
-      alert(`Feil ved opprettelse av turnering: ${error instanceof Error ? error.message : 'Ukjent feil'}`)
+      alert(`${t('error')}: ${error instanceof Error ? error.message : 'Ukjent feil'}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -46,16 +48,16 @@ export default function NewTournamentPage() {
     <div className="px-4 py-6 sm:px-0">
       <div className="max-w-md mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Opprett ny turnering</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">{t('title')}</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Gi turneringen et navn og start administrasjonen
+            {t('subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Turneringsnavn
+              {t('form.label')}
             </label>
             <div className="mt-1">
               <input
@@ -66,11 +68,11 @@ export default function NewTournamentPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                placeholder="F.eks. Vinterturnering 2025"
+                placeholder={t('form.placeholder')}
               />
             </div>
             <p className="mt-2 text-sm text-gray-500">
-              Du kan legge til lag og spillere etter at turneringen er opprettet
+              {t('form.hint')}
             </p>
           </div>
 
@@ -80,14 +82,14 @@ export default function NewTournamentPage() {
               onClick={() => router.back()}
               className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Avbryt
+              {t('form.cancel')}
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !name.trim()}
               className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Oppretter...' : 'Opprett turnering'}
+              {isSubmitting ? t('form.submitting') : t('form.submit')}
             </button>
           </div>
         </form>

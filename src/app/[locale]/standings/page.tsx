@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl';
 
 interface Tournament {
   id: number
@@ -10,6 +11,7 @@ interface Tournament {
 }
 
 export default function StandingsPage() {
+  const t = useTranslations('Standings');
   const [tournaments, setTournaments] = useState<Tournament[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -34,7 +36,7 @@ export default function StandingsPage() {
   if (loading) {
     return (
       <div className="px-4 py-6 sm:px-0">
-        <div className="text-center">Laster...</div>
+        <div className="text-center">{t('loading')}</div>
       </div>
     )
   }
@@ -43,9 +45,9 @@ export default function StandingsPage() {
     <div className="px-4 py-6 sm:px-0">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-2xl font-semibold text-gray-900">Ligatabeller</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">{t('title')}</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Velg en turnering for å se ligatabellen
+            {t('subtitle')}
           </p>
         </div>
       </div>
@@ -53,16 +55,16 @@ export default function StandingsPage() {
       <div className="mt-8">
         {tournaments.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-500 text-lg mb-4">Ingen turneringer funnet</div>
+            <div className="text-gray-500 text-lg mb-4">{t('empty.message')}</div>
             <p className="text-sm text-gray-400">
-              Opprett en turnering for å se ligatabeller
+              {t('empty.sub')}
             </p>
             <div className="mt-4">
               <Link
                 href="/tournaments/new"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Opprett ny turnering
+                {t('empty.create')}
               </Link>
             </div>
           </div>
@@ -87,7 +89,7 @@ export default function StandingsPage() {
                     {tournament.name}
                   </h3>
                   <p className="mt-2 text-sm text-gray-500">
-                    Se ligatabell og toppscorere
+                    {t('card.view')}
                   </p>
                 </div>
                 <span

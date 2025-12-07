@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations, useFormatter } from 'next-intl';
 
 interface Tournament {
   id: number
@@ -16,6 +17,8 @@ interface Tournament {
 }
 
 export default function TournamentsPage() {
+  const t = useTranslations('Tournaments');
+  const format = useFormatter();
   const [tournaments, setTournaments] = useState<Tournament[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -39,7 +42,7 @@ export default function TournamentsPage() {
   }
 
   const handleDeleteTournament = async (tournamentId: number, tournamentName: string) => {
-    if (!confirm(`Er du sikker på at du vil slette turneringen "${tournamentName}"? Dette vil også slette alle lag, spillere og kamper.`)) {
+    if (!confirm(t('confirmDelete', { name: tournamentName }))) {
       return
     }
 
@@ -53,16 +56,16 @@ export default function TournamentsPage() {
         setTournaments(tournaments.filter(t => t.id !== tournamentId))
       } else {
         const errorData = await response.json()
-        alert(`Feil ved sletting av turnering: ${errorData.error || 'Ukjent feil'}`)
+        alert(`${t('errorDelete')}: ${errorData.error || 'Ukjent feil'}`)
       }
     } catch (error) {
       console.error('Error deleting tournament:', error)
-      alert('Feil ved sletting av turnering')
+      alert(t('errorDelete'))
     }
   }
 
   const handleFinishTournament = async (tournamentId: number, tournamentName: string) => {
-    if (!confirm(`Er du sikker på at du vil avslutte turneringen "${tournamentName}"? Dette vil låse turneringen for videre redigering.`)) {
+    if (!confirm(t('confirmFinish', { name: tournamentName }))) {
       return
     }
 
@@ -77,23 +80,23 @@ export default function TournamentsPage() {
 
       if (response.ok) {
         // Update tournament in list
-        setTournaments(tournaments.map(t => 
+        setTournaments(tournaments.map(t =>
           t.id === tournamentId ? { ...t, isFinished: true } : t
         ))
       } else {
         const errorData = await response.json()
-        alert(`Feil ved avslutning av turnering: ${errorData.error || 'Ukjent feil'}`)
+        alert(`${t('errorFinish')}: ${errorData.error || 'Ukjent feil'}`)
       }
     } catch (error) {
       console.error('Error finishing tournament:', error)
-      alert('Feil ved avslutning av turnering')
+      alert(t('errorFinish'))
     }
   }
 
   if (loading) {
     return (
       <div className="px-4 py-6 sm:px-0">
-        <div className="text-center">Laster...</div>
+        <div className="text-center">{t('loading')}</div>
       </div>
     )
   }
@@ -102,9 +105,9 @@ export default function TournamentsPage() {
     <div className="px-4 py-6 sm:px-0">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-2xl font-semibold text-gray-900">Turneringer</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">{t('title')}</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Administrer og opprett nye turneringer
+            {t('subtitle')}
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -112,7 +115,7 @@ export default function TournamentsPage() {
             href="/tournaments/new"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto"
           >
-            Opprett ny turnering
+            {t('createButton')}
           </Link>
         </div>
       </div>
@@ -125,19 +128,19 @@ export default function TournamentsPage() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      Turnering
+                      {t('table.tournament')}
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      Lag
+                      {t('table.teams')}
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      Kamper
+                      {t('table.games')}
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      Opprettet
+                      {t('table.created')}
                     </th>
                     <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Handlinger</span>
+                      <span className="sr-only">{t('table.actions')}</span>
                     </th>
                   </tr>
                 </thead>
@@ -149,23 +152,23 @@ export default function TournamentsPage() {
                           <div className="text-sm font-medium text-gray-900">{tournament.name}</div>
                           {tournament.isFinished && (
                             <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                              Avsluttet
+                              {t('status.finished')}
                             </span>
                           )}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {tournament._count.teams} lag
+                          {tournament._count.teams} {t('teamsSuffix')}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {tournament._count.games} kamper
+                          {tournament._count.games} {t('gamesSuffix')}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(tournament.createdAt).toLocaleDateString('no-NO')}
+                        {format.dateTime(new Date(tournament.createdAt), { year: 'numeric', month: '2-digit', day: '2-digit' })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center space-x-3">
@@ -173,21 +176,21 @@ export default function TournamentsPage() {
                             href={`/tournaments/${tournament.id}`}
                             className="text-blue-600 hover:text-blue-900"
                           >
-                            Administrer
+                            {t('actions.manage')}
                           </Link>
                           {!tournament.isFinished && (
                             <button
                               onClick={() => handleFinishTournament(tournament.id, tournament.name)}
                               className="text-orange-600 hover:text-orange-900"
                             >
-                              Avslutt
+                              {t('actions.finish')}
                             </button>
                           )}
                           <button
                             onClick={() => handleDeleteTournament(tournament.id, tournament.name)}
                             className="text-red-600 hover:text-red-900"
                           >
-                            Slett
+                            {t('actions.delete')}
                           </button>
                         </div>
                       </td>
@@ -202,12 +205,12 @@ export default function TournamentsPage() {
 
       {tournaments.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-gray-500 text-lg mb-4">Ingen turneringer opprettet ennå</div>
+          <div className="text-gray-500 text-lg mb-4">{t('empty.message')}</div>
           <Link
             href="/tournaments/new"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
           >
-            Opprett din første turnering
+            {t('empty.createFirst')}
           </Link>
         </div>
       )}

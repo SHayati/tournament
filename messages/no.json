@@ -1,0 +1,188 @@
+{
+    "Navigation": {
+        "home": "Hjem",
+        "players": "Spillere",
+        "tournaments": "Turneringer",
+        "standings": "Tabeller",
+        "settings": "Innstillinger"
+    },
+    "Stopwatch": {
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Reset"
+    },
+    "SetupMenu": {
+        "settings": "Innstillinger",
+        "title": "Skriv spilletid (minutter)",
+        "placeholder": "For eksempel 15",
+        "hint": "0 eller tomt betyr uendelig."
+    },
+    "Common": {
+        "title": "Persia Fotball turnering",
+        "description": "Administrer fotball turneringer"
+    },
+    "Home": {
+        "title": "Velkommen til Persia Fotball turnering",
+        "subtitle": "Administrer turneringer, lag, spillere og kamper på en enkel måte",
+        "manageTournaments": "Administrer Turneringer",
+        "manageTournamentsDesc": "Opprett og administrer turneringer",
+        "createTournament": "Opprett Ny Turnering",
+        "createTournamentDesc": "Start en ny fotball turnering",
+        "viewStandings": "Se Tabeller",
+        "viewStandingsDesc": "Ligatabeller og toppscorere"
+    },
+    "Tournaments": {
+        "title": "Turneringer",
+        "subtitle": "Administrer og opprett nye turneringer",
+        "createButton": "Opprett ny turnering",
+        "loading": "Laster...",
+        "confirmDelete": "Er du sikker på at du vil slette turneringen \"{name}\"? Dette vil også slette alle lag, spillere og kamper.",
+        "confirmFinish": "Er du sikker på at du vil avslutte turneringen \"{name}\"? Dette vil låse turneringen for videre redigering.",
+        "errorDelete": "Feil ved sletting av turnering",
+        "errorFinish": "Feil ved avslutning av turnering",
+        "table": {
+            "tournament": "Turnering",
+            "teams": "Lag",
+            "games": "Kamper",
+            "created": "Opprettet",
+            "actions": "Handlinger"
+        },
+        "status": {
+            "finished": "Avsluttet",
+            "scheduled": "Planlagt",
+            "inProgress": "Pågår"
+        },
+        "actions": {
+            "manage": "Administrer",
+            "finish": "Avslutt",
+            "delete": "Slett"
+        },
+        "empty": {
+            "message": "Ingen turneringer opprettet ennå",
+            "createFirst": "Opprett din første turnering"
+        },
+        "teamsSuffix": "lag",
+        "gamesSuffix": "kamper"
+    },
+    "TournamentsNew": {
+        "title": "Opprett ny turnering",
+        "subtitle": "Gi turneringen et navn og start administrasjonen",
+        "form": {
+            "label": "Turneringsnavn",
+            "placeholder": "F.eks. Vinterturnering 2025",
+            "hint": "Du kan legge til lag og spillere etter at turneringen er opprettet",
+            "cancel": "Avbryt",
+            "submit": "Opprett turnering",
+            "submitting": "Oppretter..."
+        },
+        "error": "Feil ved opprettelse av turnering"
+    },
+    "TournamentDetail": {
+        "notFound": "Turnering ikke funnet",
+        "back": "← Tilbake til turneringer",
+        "status": {
+            "finished": "Avsluttet",
+            "scheduled": "Planlagt",
+            "inProgress": "Pågår"
+        },
+        "created": "Opprettet",
+        "stats": {
+            "teams": "Lag",
+            "games": "Kamper",
+            "players": "Spillere"
+        },
+        "actions": {
+            "manageTeams": "Administrer Lag",
+            "manageTeamsDesc": "Legg til og administrer lag",
+            "manageGames": "Administrer Kamper",
+            "manageGamesDesc": "Opprett og administrer kamper",
+            "viewStandings": "Ligatabell",
+            "viewStandingsDesc": "Se resultater og poeng"
+        },
+        "finishedMessage": {
+            "title": "Turneringen er avsluttet",
+            "desc": "Du kan ikke lenger redigere lag eller kamper"
+        },
+        "gamesList": {
+            "all": "Alle kamper",
+            "recent": "Siste kamper",
+            "viewDetails": "Se detaljer",
+            "recordGoals": "Registrer mål"
+        }
+    },
+    "Players": {
+        "title": "Administrer Spillere",
+        "statsTitle": "Spillerstatistikk",
+        "loading": "Laster spillere...",
+        "empty": "Ingen spillere registrert",
+        "table": {
+            "player": "Spiller",
+            "team": "Lag",
+            "tournaments": "Turneringer",
+            "won": "Vunnet",
+            "draw": "Uavgjort",
+            "lost": "Tapt",
+            "goals": "Mål",
+            "ownGoals": "Selvmål",
+            "goalsPerGame": "Mål/kamp"
+        }
+    },
+    "Standings": {
+        "title": "Ligatabeller",
+        "subtitle": "Velg en turnering for å se ligatabellen",
+        "loading": "Laster...",
+        "empty": {
+            "message": "Ingen turneringer funnet",
+            "sub": "Opprett en turnering for å se ligatabeller",
+            "create": "Opprett ny turnering"
+        },
+        "card": {
+            "view": "Se ligatabell og toppscorere"
+        }
+    },
+    "Teams": {
+        "notFound": "Turnering ikke funnet",
+        "back": "← Tilbake til turneringer",
+        "title": "Lag for {name}",
+        "subtitle": "Administrer lag og spillere for denne turneringen",
+        "teamsHeader": "Lag",
+        "createButton": "Opprett nytt lag",
+        "table": {
+            "team": "Lag",
+            "playerCount": "Antall spillere",
+            "players": "Spillere",
+            "actions": "Handlinger"
+        },
+        "playersCount": "{current}/10 spillere",
+        "noPlayers": "Ingen spillere",
+        "managePlayers": "Administrer spillere",
+        "empty": "Ingen lag opprettet ennå"
+    },
+    "Games": {
+        "notFound": "Turnering ikke funnet",
+        "back": "← Tilbake til turnering",
+        "title": "Kamper for {name}",
+        "subtitle": "Administrer kamper for denne turneringen",
+        "gamesHeader": "Kamper",
+        "createButton": "Opprett ny kamp",
+        "table": {
+            "match": "Kamp",
+            "result": "Resultat",
+            "goals": "Mål",
+            "actions": "Handlinger"
+        },
+        "status": {
+            "scheduled": "Planlagt",
+            "inProgress": "Pågår",
+            "finished": "Ferdig"
+        },
+        "goalsCount": "{count} mål",
+        "actions": {
+            "start": "Start spill",
+            "recordGoals": "Registrer mål",
+            "details": "Se detaljer",
+            "edit": "Rediger kamp"
+        },
+        "empty": "Ingen kamper opprettet ennå"
+    }
+}

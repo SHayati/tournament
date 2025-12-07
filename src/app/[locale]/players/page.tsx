@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl';
 
 interface PlayerStats {
   id: number
@@ -16,6 +17,7 @@ interface PlayerStats {
 }
 
 export default function PlayersHomePage() {
+  const t = useTranslations('Players');
   const [playerStats, setPlayerStats] = useState<PlayerStats[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -39,50 +41,50 @@ export default function PlayersHomePage() {
   if (loading) {
     return (
       <div className="px-4 py-6 sm:px-0">
-        <div className="text-center">Laster spillere...</div>
+        <div className="text-center">{t('loading')}</div>
       </div>
     )
   }
 
   return (
     <div className="px-4 py-6 sm:px-0 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Administrer Spillere</h1>
-      
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">{t('title')}</h1>
+
       {/* Player Statistics Table */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">Spillerstatistikk</h2>
+          <h2 className="text-lg font-medium text-gray-900">{t('statsTitle')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Spiller
+                  {t('table.player')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Lag
+                  {t('table.team')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Turneringer
+                  {t('table.tournaments')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Vunnet
+                  {t('table.won')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Uavgjort
+                  {t('table.draw')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tapt
+                  {t('table.lost')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Mål
+                  {t('table.goals')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Selvmål
+                  {t('table.ownGoals')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Mål/kamp
+                  {t('table.goalsPerGame')}
                 </th>
               </tr>
             </thead>
@@ -90,7 +92,7 @@ export default function PlayersHomePage() {
               {playerStats.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="px-6 py-8 text-center text-gray-500">
-                    Ingen spillere registrert
+                    {t('empty')}
                   </td>
                 </tr>
               ) : (
@@ -142,7 +144,7 @@ export default function PlayersHomePage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                          {player.wins + player.draws + player.losses > 0 
+                          {player.wins + player.draws + player.losses > 0
                             ? (player.goalsScored / (player.wins + player.draws + player.losses)).toFixed(2)
                             : '0.00'
                           }
