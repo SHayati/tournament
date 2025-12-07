@@ -48,15 +48,15 @@ export default async function RootLayout({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="grid grid-cols-3 items-center h-14">
                     <div className="flex items-center">
-                      <h1 className="text-lg font-semibold text-gray-900">
+                      <h1 className="hidden sm:block text-lg font-semibold text-gray-900">
                         {/* @ts-ignore */}
                         {messages?.Common?.title || 'Persia Fotball turnering'}
                       </h1>
                     </div>
-                    <div className="flex justify-center">
-                      <Stopwatch />
+                    <div className="flex justify-center md:col-start-2">
+                      {/* Stopwatch moved below header */}
                     </div>
-                    <nav className="flex items-center justify-end space-x-1">
+                    <nav className="flex items-center justify-end space-x-1 col-start-3">
 
                       <Link href="/" className="px-2 py-1 text-xs font-medium text-gray-600 hover:text-white rounded-md hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
                         {t('home')}
@@ -75,6 +75,9 @@ export default async function RootLayout({
                   </div>
                 </div>
               </header>
+              <div className="flex justify-center mt-4 px-4 sticky top-2 z-50">
+                <Stopwatch />
+              </div>
               <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 {children}
               </main>

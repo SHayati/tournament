@@ -34,7 +34,8 @@ export async function POST(
     const updatedGame = await prisma.game.update({
       where: { id: gameId },
       data: {
-        status: 'IN_PROGRESS'
+        status: 'IN_PROGRESS',
+        timerStart: new Date()
       }
     })
 

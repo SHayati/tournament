@@ -6,10 +6,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await params // signature kept; fetch globally unassigned players
+    await params // signature kept; fetch globally unassigned ACTIVE players only
     const players = await prisma.player.findMany({
-      where: { teamId: null },
-      orderBy: { number: 'asc' }
+      where: {
+        teamId: null,
+        isActive: true  // Only show active players for team assignment
+      },
+      orderBy: { name: 'asc' }
     })
     return NextResponse.json(players)
   } catch (error) {

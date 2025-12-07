@@ -57,7 +57,7 @@ export default function SetupMenu() {
         {t('settings')}
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-4 z-50">
+        <div className="absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-4 z-[100]">
           {session ? (
             <>
               <div className="mb-2 text-sm font-medium text-gray-900">{t('title')}</div>
@@ -77,7 +77,7 @@ export default function SetupMenu() {
                     saveTarget(0) // treat empty as no limit
                   }
                 }}
-                className="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm px-3 py-2"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm px-3 py-2 text-black"
               />
               <p className="mt-2 text-xs text-gray-500">{t('hint')}</p>
             </>
