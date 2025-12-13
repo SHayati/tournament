@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/navigation'
 import { prisma } from '@/lib/prisma'
 import { getTranslations } from 'next-intl/server'
+import TeamsList from '@/components/TeamsList'
 
 async function getTournamentWithTeams(tournamentId: number) {
   return await prisma.tournament.findUnique({
@@ -36,6 +37,11 @@ export default async function TournamentTeamsPage({ params }: { params: Promise<
         <div className="text-center text-red-600">{t('notFound')}</div>
       </div>
     )
+  }
+
+  const translations = {
+    noPlayers: t('noPlayers'),
+    managePlayers: t('managePlayers')
   }
 
   return (
@@ -90,43 +96,11 @@ export default async function TournamentTeamsPage({ params }: { params: Promise<
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {tournament.teams.map((team) => (
-                    <tr key={team.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{team.name}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {t('playersCount', { current: team._count.players })}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">
-                          {team.players.length > 0 ? (
-                            <div className="flex flex-wrap gap-1">
-                              {team.players.map((player) => (
-                                <span key={player.id} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                  #{player.number} {player.name}
-                                </span>
-                              ))}
-                            </div>
-                          ) : (
-                            <span className="text-gray-500">{t('noPlayers')}</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link
-                          href={`/tournaments/${tournamentId}/teams/${team.id}/players`}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          {t('managePlayers')}
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                <TeamsList
+                  teams={tournament.teams}
+                  tournamentId={tournamentId}
+                  translations={translations}
+                />
               </table>
             </div>
           </div>

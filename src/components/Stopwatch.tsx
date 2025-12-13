@@ -103,9 +103,15 @@ export default function Stopwatch() {
             setFinished(false);
           }
         } else {
+          // Timer is paused - show the saved elapsed time
           setRunning(false);
-          setSeconds(0);
-          setFinished(false);
+          setSeconds(data.elapsedSeconds || 0);
+          // Check if paused at finished state
+          if (data.targetSeconds > 0 && data.elapsedSeconds >= data.targetSeconds) {
+            setFinished(true);
+          } else {
+            setFinished(false);
+          }
           hasPlayedWhistle.current = false;
         }
       }
@@ -237,7 +243,7 @@ export default function Stopwatch() {
       {/* Close button */}
       <button
         onClick={() => setIsVisible(false)}
-        className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white text-xs transition-colors"
+        className="absolute top-2 left-2 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white text-xs transition-colors"
         title="Hide timer"
       >
         ✕

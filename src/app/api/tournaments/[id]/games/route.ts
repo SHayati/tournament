@@ -8,7 +8,7 @@ export async function GET(
   try {
     const { id } = await params
     const tournamentId = parseInt(id)
-    
+
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 })
     }
@@ -24,9 +24,10 @@ export async function GET(
           }
         }
       },
-      orderBy: {
-        createdAt: 'asc'
-      }
+      orderBy: [
+        { sortOrder: 'asc' },
+        { id: 'asc' }  // Fallback for games with same sortOrder
+      ]
     })
     return NextResponse.json(games)
   } catch (error) {
@@ -43,7 +44,7 @@ export async function POST(
     const { id } = await params
     const tournamentId = parseInt(id)
     const { homeTeamId, awayTeamId } = await request.json()
-    
+
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 })
     }
@@ -77,12 +78,20 @@ export async function POST(
       return NextResponse.json({ error: 'One or both teams not found in tournament' }, { status: 400 })
     }
 
+    // Get max sortOrder for this tournament
+    const maxOrder = await prisma.game.findFirst({
+      where: { tournamentId },
+      orderBy: { sortOrder: 'desc' },
+      select: { sortOrder: true }
+    })
+
     const game = await prisma.game.create({
       data: {
         tournamentId: tournamentId,
         homeTeamId: homeTeamId,
         awayTeamId: awayTeamId,
-        status: 'SCHEDULED'
+        status: 'SCHEDULED',
+        sortOrder: (maxOrder?.sortOrder ?? 0) + 1
       },
       include: {
         homeTeam: true,

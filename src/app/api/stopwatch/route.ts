@@ -9,6 +9,7 @@ const STOPWATCH_FILE = path.join(process.cwd(), 'data', 'stopwatch.json');
 interface StopwatchState {
     startedAt: string | null;  // ISO timestamp when timer started (UTC)
     targetSeconds: number;      // Target duration in seconds
+    pausedSeconds: number;      // Elapsed seconds when paused
     finished: boolean;          // Whether the timer has finished
 }
 
@@ -23,12 +24,14 @@ function readState(): StopwatchState {
     try {
         if (fs.existsSync(STOPWATCH_FILE)) {
             const data = fs.readFileSync(STOPWATCH_FILE, 'utf-8');
-            return JSON.parse(data);
+            const parsed = JSON.parse(data);
+            // Ensure pausedSeconds exists for backwards compatibility
+            return { pausedSeconds: 0, finished: false, ...parsed };
         }
     } catch (e) {
         console.error('Error reading stopwatch state:', e);
     }
-    return { startedAt: null, targetSeconds: 0, finished: false };
+    return { startedAt: null, targetSeconds: 0, pausedSeconds: 0, finished: false };
 }
 
 function writeState(state: StopwatchState) {
@@ -40,19 +43,18 @@ function writeState(state: StopwatchState) {
 export async function GET() {
     const state = readState();
 
-    let elapsedSeconds = 0;
+    let elapsedSeconds = state.pausedSeconds;
     let running = false;
 
     if (state.startedAt) {
         const startTime = new Date(state.startedAt).getTime();
         const now = Date.now();
-        elapsedSeconds = Math.floor((now - startTime) / 1000);
+        elapsedSeconds = state.pausedSeconds + Math.floor((now - startTime) / 1000);
         running = true;
 
-        // Check if finished
+        // Cap at target
         if (state.targetSeconds > 0 && elapsedSeconds >= state.targetSeconds) {
             elapsedSeconds = state.targetSeconds;
-            // Auto-stop when target reached
         }
     }
 
@@ -60,11 +62,12 @@ export async function GET() {
         startedAt: state.startedAt,
         targetSeconds: state.targetSeconds,
         elapsedSeconds,
+        pausedSeconds: state.pausedSeconds,
         running: state.startedAt !== null
     });
 }
 
-// POST: Control the stopwatch (start, stop, reset, setTarget)
+// POST: Control the stopwatch (start, stop/pause, reset, setTarget)
 export async function POST(request: NextRequest) {
     const body = await request.json();
     const { action, targetSeconds } = body;
@@ -74,16 +77,29 @@ export async function POST(request: NextRequest) {
     switch (action) {
         case 'start':
             if (!state.startedAt) {
+                // Start from current pausedSeconds
                 state.startedAt = new Date().toISOString();
             }
             break;
 
         case 'stop':
-            state.startedAt = null;
+            // Pause: save elapsed time and stop
+            if (state.startedAt) {
+                const startTime = new Date(state.startedAt).getTime();
+                const now = Date.now();
+                const elapsed = state.pausedSeconds + Math.floor((now - startTime) / 1000);
+                // Cap at target
+                state.pausedSeconds = state.targetSeconds > 0
+                    ? Math.min(elapsed, state.targetSeconds)
+                    : elapsed;
+                state.startedAt = null;
+            }
             break;
 
         case 'reset':
             state.startedAt = null;
+            state.pausedSeconds = 0;
+            state.finished = false;
             break;
 
         case 'setTarget':
