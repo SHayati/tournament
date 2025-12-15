@@ -1,8 +1,13 @@
 const { PrismaClient } = require('@prisma/client')
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const prisma = new PrismaClient()
 
 async function main() {
-    const adminEmail = 'irangreenpaper@gmail.com'
+    const adminEmail = process.env.SUPER_USER
+    if (!adminEmail) {
+        throw new Error('Missing SUPER_USER in environment (.env)')
+    }
 
     const admin = await prisma.user.upsert({
         where: { email: adminEmail },

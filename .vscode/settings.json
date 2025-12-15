@@ -1,0 +1,12 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}",
+        ".git{,/**}",
+        ".next{,/**}",
+        ".env*",
+        "prisma/dev.db*"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/4ceaac84-d3bf-41be-acf2-808eaa819c4e/resourceGroups/tornament_group/providers/Microsoft.Web/sites/tournament",
+    "appService.deploySubpath": "."
+}

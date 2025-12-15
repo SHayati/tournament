@@ -38,3 +38,7 @@ next-env.d.ts
 # prisma
 /prisma/dev.db
 /prisma/dev.db-journal
+
+# accidental root-level SQLite files (can be created if DATABASE_URL points at ./dev.db)
+/dev.db
+/dev.db-journal

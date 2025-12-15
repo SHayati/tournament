@@ -7,7 +7,10 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  // IMPORTANT: Set DATABASE_URL in Azure App Settings to an absolute path, e.g.
+  // DATABASE_URL="file:/home/site/wwwroot/prisma/dev.db"
+  // This prevents Prisma/SQLite from accidentally using a different file when relative paths resolve differently.
+  url      = env("DATABASE_URL")
 }
 
 model Tournament {

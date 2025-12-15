@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart": "node scripts/prisma-init.js",
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
